@@ -1,0 +1,28 @@
+---
+title: "Script 3"
+author: "Marion Blondeau"
+date: "14/04/2022"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(cache = TRUE)
+knitr::opts_chunk$set(eval = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r}
+library(sf)
+library(mapsf)
+st_read("vote.gpkg", "jointure")
+str("vote.gpkg")
+```
+
+J'ai tenté, désespéremment, de lire le ficher vote.gpkg, mais lorsque j'essaye de lire le ficher pour voir sa structure, je ne vois apparaître que "chr "vote.gpkg"" sur un fichier qui, pour mes deux premiers scripts, fonctionnait sans problème. 

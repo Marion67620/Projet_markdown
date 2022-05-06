@@ -1,0 +1,29 @@
+{
+    "id": "FA583FD7",
+    "path": "~/05. L3/SIG/Projet_markdown/script/script1.Rmd",
+    "project_path": "script/script1.Rmd",
+    "type": "r_markdown",
+    "hash": "2979503096",
+    "contents": "",
+    "dirty": false,
+    "created": 1649936844833.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "27,0",
+        "scrollLine": "0",
+        "last_setup_crc32": "",
+        "chunk_output_type": "console"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1649937281,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1649937281132,
+    "read_only": false,
+    "read_only_alternatives": []
+}

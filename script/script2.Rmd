@@ -1,0 +1,111 @@
+---
+title: "Script 2"
+author: "Marion Blondeau"
+date: "14/04/2022"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(cache = TRUE)
+knitr::opts_chunk$set(eval = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+```{r}
+library(sf)
+library(mapsf)
+```
+
+```{r}
+setwd("C:/Users/Marion/Documents/05. L3/SIG/Projet_markdown/data")
+library(leaflet)
+leaflet() %>% addTiles()
+```
+
+Je charge la library leaflet qui va me permettre de faire les opérations. 
+```{r}
+m <- leaflet()
+m <- addTiles(m)
+m
+```
+
+Utilisation des pipes.
+
+```{r}
+library(sf)
+data2 <- st_read("insee.gpkg", "bondy")
+```
+
+Je charge la library(sf) puis le fichier insee.gpkg. Je l'appelle data2 parce que j'ai commencé à écrire cela sur un script où il y avait déjà un data et un data1. 
+
+```{r}
+data2 <- st_transform(data2, 4326)
+data2$Men_prop
+```
+
+Je convertis les données, puis je sélectionne Men_prop, c'est-à-dire les ménages propriétaires, car il me semble intéressant de regarder où sont ces ménages propriétaires puis de voir quels ont été les résultats électoraux là où ils sont majoritaires (en l'occurrence, au sud de Bondy).
+
+```{r}
+pal <- colorNumeric(
+  palette = "YlOrRd",
+  domain = data2$Taux.de.participation....
+)
+leaflet(data2) %>%
+  addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5,
+    opacity = 1.0, fillOpacity = 0.5,
+    fillColor = ~colorQuantile("YlOrRd", Men_prop)(Men_prop),
+    highlightOptions = highlightOptions(color = "white", weight = 2,
+      bringToFront = TRUE)) %>% addLegend("bottomright", pal = pal, values = ~ Men_prop,
+    title = "Ménages propriétaires",
+    opacity = 1
+  ) %>% addTiles()
+
+```
+
+J'effectue ensuite la manip. Je donne le titre "Ménages propriétaires" à la légende, et je constate que les ménages propriétaires (donc, plus ou moins riches, et non pas vivant en habitats collectifs) sont majoritaires au sud de Bondy et à l'est, ainsi qu'au Nord-Ouest.  
+J'ai donc à présent un carroyage.
+
+```{r}
+library(sf)
+library(mapsf)
+data <- st_read("vote.gpkg", "jointure")
+apply(data [,14:18, drop = T], 2,sum)
+summary(data[,14:15, drop = T])
+data <- data [,15]
+names (data) [1] <- c("HERVE")
+palette <- heat.colors(5, rev = T)
+seuils <- c(85, 100, 125, 150, 175, 230)
+str(data)
+png("resultHERVE.png", width = 4000, height = 4000, res = 400)
+mf_choro(data,  var = "HERVE", breaks = seuils, pal = palette,border = NA, leg_pos = "n")
+mf_label(data, "HERVE")
+mf_inset_on(data, pos = "topright")
+par(mar = c(2,2,2,2))
+hist(data$HERVE, border = NA, right = F, col=palette, main = "", xlab = "", ylab="")
+mf_inset_off()
+dev.off()
+```
+
+Je sélectionne ensuite le fichier insee.gpkg, plus particulièrement les colonnes qui m'intéresse. Je sélectionne ensuite les moments où HERVE apparaît, après avoir regardé le résumé de la donnée.  
+Je vois donc que les votes pour Hervé ont été majoritaires au sud de Bondy.
+
+```{r}
+library("png")
+img1<-readPNG("resultHERVE.png")
+display<-function(...){
+  imageList<-list(...) ;   totalWidth<-0 ;   maxHeight<-0 ;   
+for (img in imageList){    if(is.character(img)) img<-readPNG(img) ;  dimg<-dim(img) ;  totalWidth<-totalWidth+dimg[2] ;   maxHeight<-max(maxHeight,dimg[1])  }
+  par(mar=c(0,0,0,0)) ;   plot(c(0,totalWidth),c(0,maxHeight),type="n",asp=1,xaxt="n",yaxt="n",xlab="x",ylab="y") ;   offset<-0 ; 
+  for (img in imageList){    dimg<-dim(img) ;    rasterImage(img,offset,0,offset+dimg[2],dimg[1])
+    offset<-offset+dimg[2]  }}
+display(img1)
+```
+
+Je charge ensuite la library png et utilise readPNG pour lire l'image qui a été créée grâce au code contenu dans le chunk précédant celui-ci. J'utilise ensuite la fonction display() pour pouvoir afficher l'image obtenue. Les lignes de codes entre la ligne 102 et la ligne 107 sont utilisées (et ont été trouvées sur Internet après une recherche) pour pouvoir avoir accès à la fonction display().

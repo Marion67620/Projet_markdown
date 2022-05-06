@@ -1,0 +1,33 @@
+---
+title: "Script 1"
+author: "Marion Blondeau"
+date: "14/04/2022"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(cache = TRUE)
+knitr::opts_chunk$set(eval = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+
+```{r}
+setwd("C:/Users/Marion/Documents/05. L3/SIG/Projet_markdown/data")
+library(sf)
+st_read("vote.gpkg")
+data1 <- st_read("vote.gpkg")
+str(data1)
+data2 <- read.csv("bondyInsee.csv")
+str(data2)
+```
+
+La fonction setwd me permet de m'assurer que je travaille bien dans le bon dossier, pour bien pouvoir récupérer le fichier vote.gpkg. Je joue la librairie sf afin de pouvoir utiliser la fonction st_read. Je regarde ensuite la structure de vote.gpkg (data1)  
+Je fais ensuite de même pour bondyInsee (data2)

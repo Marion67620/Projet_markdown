@@ -1,0 +1,22 @@
+name: "Maquette projet"
+navbar:
+  left:
+    - text: "script 1"
+      href: script1.html
+    - text: "script 2"
+      href: script2.html
+    - text: "script 3"
+      href: script3.html   
+  right:
+    - icon: fa-github
+      href: https://github.com/marion67620/marion67620.github.io
+output: 
+  html_document:
+    toc_float: TRUE  
+    theme: united
+    highlight: tango
+    include:
+      after_body: footer.html
+    number_sections: yes
+    exclude: [data-raw, data]
+    css: css/styles.css
